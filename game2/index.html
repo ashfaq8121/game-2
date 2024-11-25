@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: lightsalmon;
+        }
+        .scoreboard {
+            margin: 20px 0;
+        }
+        .buttons {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .one{
+            background-color: aqua;
+            text-decoration-color: brown;
+        }
+        .two{
+            background-color:lightgreen;
+            text-decoration-color: brown;
+        }
+        .third{
+background-color: rgb(229, 91, 181);
+        text-decoration-color: brown;
+    }
+    
+    </style>
+</head>
+<body>
+    <h1>Rock-Paper-Scissor-Game</h1>
+    <div class="scoreboard">
+        <p><strong>Your Score:</strong> <span id="userScore">0</span></p>
+        <p><strong>Computer Score:</strong> <span id="computerScore">0</span></p>
+    </div>
+    <div class="buttons">
+        <button class="one"onclick="playGame('rock')">Rock</button>
+        <button class="two"onclick="playGame('paper')">Paper</button>
+        <button class="third"onclick="playGame('scissors')">Scissor</button>
+    </div>
+    <div id="result"></div>
+    <script>
+        const choices = ["rock", "paper", "scissors"];
+        let userScore = 0;
+        let computerScore = 0;
+        let round = 1;
+        const totalRounds = 10;
+
+        function getComputerChoice() {
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        function getRoundWinner(userChoice, computerChoice) {
+            if (userChoice === computerChoice) {
+                return "draw";
+            } else if (
+                (userChoice === "rock" && computerChoice === "scissors") ||
+                (userChoice === "paper" && computerChoice === "rock") ||
+                (userChoice === "scissors" && computerChoice === "paper")
+            ) {
+                return "user";
+            } else {
+                return "computer";
+            }
+        }
+
+        function playGame(userChoice) {
+            if (round > totalRounds) {
+                document.getElementById("result").innerText = "Game over! Refresh the page to play again.";
+                return;
+            }
+
+            const computerChoice = getComputerChoice();
+            const winner = getRoundWinner(userChoice, computerChoice);
+            if (winner === "user") {
+                userScore++;
+                document.getElementById("result").innerText = `Round ${round}: You chose ${userChoice}, computer chose ${computerChoice}. You win this round!`;
+            } else if (winner === "computer") {
+                computerScore++;
+                document.getElementById("result").innerText = `Round ${round}: You chose ${userChoice}, computer chose ${computerChoice}. Computer wins this round!`;
+            } else {
+                document.getElementById("result").innerText = `Round ${round}: You chose ${userChoice}, computer chose ${computerChoice}. It's a draw!`;
+            }
+
+            document.getElementById("userScore").innerText = userScore;
+            document.getElementById("computerScore").innerText = computerScore;
+
+            round++;
+
+            if (round > totalRounds) {
+                const finalResult = userScore > computerScore
+                    ? "Congratulations! You won against the computer."
+                    : userScore < computerScore
+                    ? "Oh no! The computer won this game."
+                    : "It's a tie!";
+                document.getElementById("result").innerText += `\n\nGame Over! Final Scores: You: ${userScore}, Computer: ${computerScore}. ${finalResult}`;
+            }
+        }
+    </script>
+</body>
+</html>
